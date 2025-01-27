@@ -1,6 +1,6 @@
 
 local iron = "default:steel_ingot"
-local gold = "defualt:gold_ingot"
+local gold = "default:gold_ingot"
 local diamond = "default:diamond"
 
 if chunkkeeper.get_game() == "MCL" then
@@ -9,6 +9,7 @@ if chunkkeeper.get_game() == "MCL" then
     diamond = "mcl_core:diamond"
 end
 
+--chunkkeeper:keeper_off
 minetest.register_craft({
     output = "chunkkeeper:keeper_off",
     recipe = {
