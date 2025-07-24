@@ -1,6 +1,8 @@
-
 -- Persistance: https://github.com/minetest/minetest/blob/master/doc/lua_api.txt#L6403-L6413
 -- lwscratch robot Persistance: https://github.com/loosewheel/lwscratch/blob/master/robot.lua#L81-L88
+-- add config max_forceloaded_blocks = 1024
+
+local S = minetest.get_translator("surface_effect")
 
 -- Removes time from the time_left, but allows for super_user placed versions with no issues
 function chunkkeeper.processFuel(pos)
@@ -18,6 +20,7 @@ function chunkkeeper.processFuel(pos)
                 timer = 0
             end
             if run then
+                core.log("")
                 meta:set_int("running", 0)
                 meta:set_int("time_left", timer)
                 run = false
@@ -344,7 +347,7 @@ minetest.register_node("chunkkeeper:keeper_on", {
         chunkkeeper.img("sides_bottom")
     },
     is_ground_content = false,
-    groups = {handy = 1, oddly_breakable_by_hand = 3},
+    groups = {handy = 1, oddly_breakable_by_hand = 3, not_in_creative_inventory = 1},
     drop = "chunkkeeper:keeper_off",
     on_construct = function (pos, node)
         local meta = minetest.get_meta(pos)
@@ -443,8 +446,12 @@ minetest.register_node("chunkkeeper:keeper_on", {
         end
     end,
     on_timer = function (pos, elapsed)
+        --core.log("Блок загружен")
         return chunkkeeper.processFuel(pos)
-    end
+    end,
+    on_destruct = function(pos)
+        core.forceload_free_block(pos)
+    end,
 })
 
 -- Super User (Infinite time)
@@ -460,7 +467,7 @@ minetest.register_node("chunkkeeper:keeper_inf_off", {
         chunkkeeper.img("sides_bottom")
     },
     is_ground_content = false,
-    groups = {handy = 1, oddly_breakable_by_hand = 3},
+    groups = {handy = 1, oddly_breakable_by_hand = 3, not_in_creative_inventory = 1},
     drop = "chunkkeeper:keeper_inf_off",
     on_construct = function (pos, node)
         local meta = minetest.get_meta(pos)
@@ -553,7 +560,7 @@ minetest.register_node("chunkkeeper:keeper_inf_on", {
         chunkkeeper.img("sides_bottom")
     },
     is_ground_content = false,
-    groups = {handy = 1, oddly_breakable_by_hand = 3},
+    groups = {handy = 1, oddly_breakable_by_hand = 3, not_in_creative_inventory = 1},
     drop = "chunkkeeper:keeper_inf_off",
     on_construct = function (pos, node)
         local meta = minetest.get_meta(pos)
@@ -626,3 +633,80 @@ minetest.register_node("chunkkeeper:keeper_inf_on", {
     end
 })
 
+minetest.register_node("chunkkeeper:chunk_test", {
+    description = "Chunk Keeper",
+    tiles = {"default_mese_block.png^[brighten"},
+    groups = {cracky = 1},
+
+    on_construct = function(pos)
+        minetest.get_node_timer(pos):start(1)
+    end,
+
+    on_timer = function(pos, elapsed)
+        core.log("Загружен тестовый блок")
+        return true -- таймер перезапускается
+    end,
+
+    on_destruct = function(pos)
+
+    end,
+})
+
+minetest.register_on_punchnode(function(pos, node, puncher, pointed_thing)
+    if node.name ~= "chunkkeeper:keeper_on" and node.name ~= "chunkkeeper:keeper_off" then
+        return
+    end
+
+    local start = {
+        x = math.floor(pos.x / 16) * 16,
+        y = math.floor(pos.y / 16) * 16,
+        z = math.floor(pos.z / 16) * 16,
+    }
+
+    local center = vector.add(start, {x = 8, y = 8, z = 8})
+
+    local obj = minetest.add_entity(center, "chunkkeeper:mapblock_box") -- <== правильная сущность
+    if obj then
+        obj:set_properties({visual_size = {x = 16, y = 16}})
+    end
+
+    if puncher and puncher:is_player() then
+        local playername = puncher:get_player_name()
+        minetest.chat_send_player(playername,
+                "[ChunkKeeper] Показаны границы мапблока от " ..
+                        minetest.pos_to_string(start) ..
+                        " до " ..
+                        minetest.pos_to_string(vector.add(start, {x=15, y=15, z=15}))
+        )
+    end
+end)
+
+minetest.register_entity("chunkkeeper:mapblock_box", {
+    initial_properties = {
+        physical = false,
+        collide_with_objects = false,
+        pointable = false,
+        visual = "cube",
+        textures = {
+            chunkkeeper.img("border"),
+            chunkkeeper.img("border"),
+            chunkkeeper.img("border"),
+            chunkkeeper.img("border"),
+            chunkkeeper.img("border"),
+            chunkkeeper.img("border")
+        },
+        visual_size = {x = 1.0, y = 1.0},
+        glow = 5,
+        spritediv = {x=1, y=1},
+        is_visible = true,
+    },
+
+    timer = 0,
+
+    on_step = function(self, dtime)
+        self.timer = self.timer + dtime
+        if self.timer > 5 then -- 5 секунд
+            self.object:remove()
+        end
+    end,
+})
