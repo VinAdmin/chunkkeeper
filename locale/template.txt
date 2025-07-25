@@ -1,0 +1,17 @@
+# textdomain: chunkkeeper
+Run: On=
+Run: Off=
+Owner: Hidden=
+Owner: Shown=
+'s Chunk Keeper (@1)=
+Chunk Keeper (@1)=
+'s Chunk Keeper (Inf)=
+Chunk Keeper (Inf)=
+Chunk Keeper (Off)=
+Chunk Keeper (Off)@nKeeps the mapblock it's located in active@nConsumes burnable items to add time=
+Chunk Keeper (On)=
+Chunk Keeper (On)@nKeeps the mapblock it's located in active@nConsumes burnable items to add time=
+Chunk Keeper (Off)@nKeeps the mapblock it's located in active@nThis one has unlimited time=
+Chunk Keeper (On)@nKeeps the mapblock it's located in active@nThis one has unlimited time=
+Chunk Keeper test=
+[ChunkKeeper] Mapblock boundaries are shown from @1 to @2=

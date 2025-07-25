@@ -1,0 +1,17 @@
+# textdomain: chunkkeeper
+Run: On=Выполнить: Вкл.
+Run: Off=Выполнить: Выкл.
+Owner: Hidden=Владелец: Скрытый
+Owner: Shown=Владелец: Показано
+'s Chunk Keeper (@1)='c Хранитель куска (@1)
+Chunk Keeper (@1)=Хранитель кусков (@1)
+'s Chunk Keeper (Inf)='c Хранитель куска (инф.)
+Chunk Keeper (Inf)=Хранитель куска (инф.)
+Chunk Keeper (Off)=Хранитель кусков (выкл.)
+Chunk Keeper (Off)@nKeeps the mapblock it's located in active@nConsumes burnable items to add time=Хранитель куска (Выкл.)@nСохраняет блок карты, в котором он находится, активным@nИспользует сжигаемые предметы для увеличения времени
+Chunk Keeper (On)=Хранитель кусков (вкл.)
+Chunk Keeper (On)@nKeeps the mapblock it's located in active@nConsumes burnable items to add time=Хранитель куска (вкл.)@nСохраняет блок карты, в котором он находится, активным@nИспользует сжигаемые предметы для увеличения времени
+Chunk Keeper (Off)@nKeeps the mapblock it's located in active@nThis one has unlimited time=Хранитель куска (выкл.)@nСохраняет блок карты, в котором он находится, активным@nЭтот блок имеет неограниченное время
+Chunk Keeper (On)@nKeeps the mapblock it's located in active@nThis one has unlimited time=Хранитель куска (вкл.)@nСохраняет блок карты, в котором он находится, активным@nЭтот блок имеет неограниченное время.
+Chunk Keeper test=Тест Chunk Keeper
+[ChunkKeeper] Mapblock boundaries are shown from @1 to @2=[ChunkKeeper] Границы блоков карты показаны от @1 до @2

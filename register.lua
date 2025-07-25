@@ -2,7 +2,7 @@
 -- lwscratch robot Persistance: https://github.com/loosewheel/lwscratch/blob/master/robot.lua#L81-L88
 -- add config max_forceloaded_blocks = 1024
 
-local S = minetest.get_translator("surface_effect")
+local S = minetest.get_translator("chunkkeeper")
 
 -- Removes time from the time_left, but allows for super_user placed versions with no issues
 function chunkkeeper.processFuel(pos)
@@ -20,7 +20,6 @@ function chunkkeeper.processFuel(pos)
                 timer = 0
             end
             if run then
-                core.log("")
                 meta:set_int("running", 0)
                 meta:set_int("time_left", timer)
                 run = false
@@ -84,15 +83,15 @@ function chunkkeeper.update_formspec(pos)
 
     local running_button = ""
     if run then
-        running_button = "Run: On"
+        running_button = S("Run: On")
     else
-        running_button = "Run: Off"
+        running_button = S("Run: Off")
     end
     local hide_owner_button = ""
     if hide_owner then
-        hide_owner_button = "Owner: Hidden"
+        hide_owner_button = S("Owner: Hidden")
     else
-        hide_owner_button = "Owner: Shown"
+        hide_owner_button = S("Owner: Shown")
     end
 
     -- Inventory and settings (formspec)
@@ -101,8 +100,8 @@ function chunkkeeper.update_formspec(pos)
             "size[8,6]" ..
             "label[0.3,0.3;"..chunkkeeper.ts2string(timer).."]" ..
             "list[context;main;2,0;1,1;]" ..
-            "button[0,1; 1.5,1;toggle_running;"..minetest.formspec_escape(running_button).."]" ..
-            "button[3,1; 2.5,1;toggle_hide_owner;" .. minetest.formspec_escape(hide_owner_button) .."]" ..
+            "button[0,1; 3,1;toggle_running;"..minetest.formspec_escape(running_button).."]" ..
+            "button[3,1; 4,1;toggle_hide_owner;" .. minetest.formspec_escape(hide_owner_button) .."]" ..
             "list[current_player;main;0,2;8,4;]" ..
             "listring[current_player;main]"  ..
             "listring[context;main]"
@@ -113,8 +112,8 @@ function chunkkeeper.update_formspec(pos)
             "label[0.3,0.3;"..chunkkeeper.ts2string(timer).."]"..
             "list[context;main;2,0;1,1;]"..
             mclform.get_itemslot_bg(2, 0, 1, 1)..
-            "button[0,1; 1.5,1;toggle_running;"..minetest.formspec_escape(running_button).."]" ..
-            "button[3,1; 2.5,1;toggle_hide_owner;" .. minetest.formspec_escape(hide_owner_button) .."]" ..
+            "button[0,1; 3,1;toggle_running;"..minetest.formspec_escape(running_button).."]" ..
+            "button[3,1; 4,1;toggle_hide_owner;" .. minetest.formspec_escape(hide_owner_button) .."]" ..
             "label[0,1.85;Inventory]"..
 --            "list[current_player;main;0,6.5;9,4;]" ..
 --            mclform.get_itemslot_bg(0, 6.5, 9, 4)..
@@ -128,15 +127,15 @@ function chunkkeeper.update_formspec(pos)
     end
 
     -- Hover text (infotext)
-    local title = owner .. "'s Chunk Keeper (" .. tostring(chunkkeeper.ts2string(timer)) .. ")"
+    local title = owner .. S("'s Chunk Keeper (@1)", tostring(chunkkeeper.ts2string(timer)))
     if hide_owner or owner == "" then
-        title = "Chunk Keeper (" .. tostring(chunkkeeper.ts2string(timer)) .. ")"
+        title = S("Chunk Keeper (@1)", tostring(chunkkeeper.ts2string(timer)))
     end
     if super then
         if not hide_owner and owner ~= "" then
-            title = owner .. "'s Chunk Keeper (Inf)"
+            title = owner .. S("'s Chunk Keeper (Inf)")
         else
-            title = "Chunk Keeper (Inf)"
+            title = S("Chunk Keeper (Inf)")
         end
     end
 
@@ -155,15 +154,15 @@ function chunkkeeper.update_formspec_inf(pos)
 
     local running_button = ""
     if run then
-        running_button = "Run: On"
+        running_button = S("Run: On")
     else
-        running_button = "Run: Off"
+        running_button = S("Run: Off")
     end
     local hide_owner_button = ""
     if hide_owner then
-        hide_owner_button = "Owner: Hidden"
+        hide_owner_button = S("Owner: Hidden")
     else
-        hide_owner_button = "Owner: Shown"
+        hide_owner_button = S("Owner: Shown")
     end
 
     -- Inventory and settings (formspec)
@@ -171,8 +170,8 @@ function chunkkeeper.update_formspec_inf(pos)
         meta:set_string("formspec",
             "size[8,6]" ..
             "label[0.3,0.3;Inf]" ..
-            "button[0,1; 1.5,1;toggle_running;"..minetest.formspec_escape(running_button).."]" ..
-            "button[3,1; 2.5,1;toggle_hide_owner;" .. minetest.formspec_escape(hide_owner_button) .."]" ..
+            "button[0,1; 3,1;toggle_running;"..minetest.formspec_escape(running_button).."]" ..
+            "button[3,1; 4,1;toggle_hide_owner;" .. minetest.formspec_escape(hide_owner_button) .."]" ..
             "list[current_player;main;0,2;8,4;]" ..
             "listring[current_player;main]"  ..
             "listring[context;main]"
@@ -181,8 +180,8 @@ function chunkkeeper.update_formspec_inf(pos)
         meta:set_string("formspec",
             "size[9, 6.5]"..
             "label[0.3,0.3;Inf]"..
-            "button[0,1; 1.5,1;toggle_running;"..minetest.formspec_escape(running_button).."]" ..
-            "button[3,1; 2.5,1;toggle_hide_owner;" .. minetest.formspec_escape(hide_owner_button) .."]" ..
+            "button[0,1; 3,1;toggle_running;"..minetest.formspec_escape(running_button).."]" ..
+            "button[3,1; 4,1;toggle_hide_owner;" .. minetest.formspec_escape(hide_owner_button) .."]" ..
             "label[0,1.85;Inventory]"..
 --            "list[current_player;main;0,6.5;9,4;]" ..
 --            mclform.get_itemslot_bg(0, 6.5, 9, 4)..
@@ -196,15 +195,15 @@ function chunkkeeper.update_formspec_inf(pos)
     end
 
     -- Hover text (infotext)
-    local title = owner .. "'s Chunk Keeper (Inf)"
+    local title = owner .. S("'s Chunk Keeper (Inf)")
     if hide_owner or owner == "" then
-        title = "Chunk Keeper (Inf)"
+        title = S("Chunk Keeper (Inf)")
     end
     if super then
         if not hide_owner and owner ~= "" then
-            title = owner .. "'s Chunk Keeper (Inf)"
+            title = owner .. S("'s Chunk Keeper (Inf)")
         else
-            title = "Chunk Keeper (Inf)"
+            title = S("Chunk Keeper (Inf)")
         end
     end
 
@@ -212,8 +211,8 @@ function chunkkeeper.update_formspec_inf(pos)
 end
 
 minetest.register_node("chunkkeeper:keeper_off", {
-    short_description = "Chunk Keeper (Off)",
-    description = "Chunk Keeper (Off)\nKeeps the mapblock it's located in active\nConsumes burnable items to add time",
+    short_description = S("Chunk Keeper (Off)"),
+    description = S("Chunk Keeper (Off)\nKeeps the mapblock it's located in active\nConsumes burnable items to add time"),
     tiles = {
         chunkkeeper.img("top_off"), -- Top
         chunkkeeper.img("sides_bottom"),
@@ -327,8 +326,8 @@ minetest.register_node("chunkkeeper:keeper_off", {
 })
 
 minetest.register_node("chunkkeeper:keeper_on", {
-    short_description = "Chunk Keeper (On)",
-    description = "Chunk Keeper (On)\nKeeps the mapblock it's located in active\nConsumes burnable items to add time",
+    short_description = S("Chunk Keeper (On)"),
+    description = S("Chunk Keeper (On)\nKeeps the mapblock it's located in active\nConsumes burnable items to add time"),
     tiles = {
         { -- Top
             name = chunkkeeper.img("top_on_animated"),
@@ -456,8 +455,8 @@ minetest.register_node("chunkkeeper:keeper_on", {
 
 -- Super User (Infinite time)
 minetest.register_node("chunkkeeper:keeper_inf_off", {
-    short_description = "Chunk Keeper (Off)",
-    description = "Chunk Keeper (Off)\nKeeps the mapblock it's located in active\nThis one has unlimited time",
+    short_description = S("Chunk Keeper (Off)"),
+    description = S("Chunk Keeper (Off)\nKeeps the mapblock it's located in active\nThis one has unlimited time"),
     tiles = {
         chunkkeeper.img("top_off"), -- Top
         chunkkeeper.img("sides_bottom"),
@@ -540,8 +539,8 @@ minetest.register_node("chunkkeeper:keeper_inf_off", {
 })
 
 minetest.register_node("chunkkeeper:keeper_inf_on", {
-    short_description = "Chunk Keeper (On)",
-    description = "Chunk Keeper (On)\nKeeps the mapblock it's located in active\nThis one has unlimited time",
+    short_description = S("Chunk Keeper (On)"),
+    description = S("Chunk Keeper (On)\nKeeps the mapblock it's located in active\nThis one has unlimited time"),
     tiles = {
         { -- Top
             name = chunkkeeper.img("top_on_animated"),
@@ -634,7 +633,7 @@ minetest.register_node("chunkkeeper:keeper_inf_on", {
 })
 
 minetest.register_node("chunkkeeper:chunk_test", {
-    description = "Chunk Keeper",
+    description = S("Chunk Keeper test"),
     tiles = {"default_mese_block.png^[brighten"},
     groups = {cracky = 1},
 
@@ -643,7 +642,7 @@ minetest.register_node("chunkkeeper:chunk_test", {
     end,
 
     on_timer = function(pos, elapsed)
-        core.log("Загружен тестовый блок")
+        core.log("info", "Загружен тестовый блок")
         return true -- таймер перезапускается
     end,
 
@@ -672,12 +671,7 @@ minetest.register_on_punchnode(function(pos, node, puncher, pointed_thing)
 
     if puncher and puncher:is_player() then
         local playername = puncher:get_player_name()
-        minetest.chat_send_player(playername,
-                "[ChunkKeeper] Показаны границы мапблока от " ..
-                        minetest.pos_to_string(start) ..
-                        " до " ..
-                        minetest.pos_to_string(vector.add(start, {x=15, y=15, z=15}))
-        )
+        minetest.chat_send_player(playername, S("[ChunkKeeper] Mapblock boundaries are shown from @1 to @2", minetest.pos_to_string(start), minetest.pos_to_string(vector.add(start, {x=15, y=15, z=15}))))
     end
 end)
 
