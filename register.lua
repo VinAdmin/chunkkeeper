@@ -210,6 +210,20 @@ function chunkkeeper.update_formspec_inf(pos)
     meta:set_string("infotext", title)
 end
 
+local function is_forceload_nearby(pos, radius)
+    local r = radius or 16
+    local minp = vector.subtract(pos, r)
+    local maxp = vector.add(pos, r)
+
+    local positions = minetest.find_nodes_in_area(minp, maxp, {"chunkkeeper:keeper_on", "chunkkeeper:keeper_off"})
+    for _, p in ipairs(positions) do
+        if not vector.equals(p, pos) then
+            return true
+        end
+    end
+    return false
+end
+
 minetest.register_node("chunkkeeper:keeper_off", {
     short_description = S("Chunk Keeper (Off)"),
     description = S("Chunk Keeper (Off)\nKeeps the mapblock it's located in active\nConsumes burnable items to add time"),
@@ -235,6 +249,18 @@ minetest.register_node("chunkkeeper:keeper_off", {
         inv:set_size("main", 1) -- input burnables here (all burn times increased by at least x2)
     end,
     after_place_node = function (pos, placer)
+        if is_forceload_nearby(pos, 32) then
+            minetest.chat_send_player(placer:get_player_name(), S("There is already an active loading block nearby."))
+            minetest.set_node(pos, {name = "air"}) -- Удалить поставленный блок
+
+            -- Вернуть предмет в инвентарь
+            local inv = placer:get_inventory()
+            if inv then
+                inv:add_item("main", ItemStack("chunkkeeper:keeper_off"))
+            end
+            return
+        end
+
         if placer and placer:is_player() then -- Only update the owner when we have an owner
             local meta = minetest.get_meta(pos)
             meta:set_string("owner", placer:get_player_name())

@@ -9,6 +9,7 @@ Chunk Keeper (@1)=Хранитель кусков (@1)
 Chunk Keeper (Inf)=Хранитель куска (инф.)
 Chunk Keeper (Off)=Хранитель кусков (выкл.)
 Chunk Keeper (Off)@nKeeps the mapblock it's located in active@nConsumes burnable items to add time=Хранитель куска (Выкл.)@nСохраняет блок карты, в котором он находится, активным@nИспользует сжигаемые предметы для увеличения времени
+There is already an active loading block nearby.=Поблизости уже есть активный блок загрузки.
 Chunk Keeper (On)=Хранитель кусков (вкл.)
 Chunk Keeper (On)@nKeeps the mapblock it's located in active@nConsumes burnable items to add time=Хранитель куска (вкл.)@nСохраняет блок карты, в котором он находится, активным@nИспользует сжигаемые предметы для увеличения времени
 Chunk Keeper (Off)@nKeeps the mapblock it's located in active@nThis one has unlimited time=Хранитель куска (выкл.)@nСохраняет блок карты, в котором он находится, активным@nЭтот блок имеет неограниченное время
