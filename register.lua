@@ -212,8 +212,9 @@ end
 
 local function is_forceload_nearby(pos, radius)
     local r = radius or 16
-    local minp = vector.subtract(pos, r)
-    local maxp = vector.add(pos, r)
+    local rvec = {x = r, y = r, z = r}
+    local minp = vector.subtract(pos, rvec)
+    local maxp = vector.add(pos, rvec)
 
     local positions = minetest.find_nodes_in_area(minp, maxp, {"chunkkeeper:keeper_on", "chunkkeeper:keeper_off"})
     for _, p in ipairs(positions) do
