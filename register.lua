@@ -211,7 +211,37 @@ function chunkkeeper.update_formspec_inf(pos)
 end
 
 local function is_forceload_nearby(pos, radius)
-    local r = radius or 16
+    local chunk_pos = {
+        x = math.floor(pos.x / 16) * 16,
+        y = math.floor(pos.y / 16) * 16,
+        z = math.floor(pos.z / 16) * 16
+    }
+
+    local chunk_min = chunk_pos
+    local chunk_max = {
+        x = chunk_pos.x + 15,
+        y = chunk_pos.y + 15,
+        z = chunk_pos.z + 15
+    }
+
+
+    for x = chunk_min.x, chunk_max.x do
+        for y = chunk_min.y, chunk_max.y do
+            for z = chunk_min.z, chunk_max.z do
+                if not (x == pos.x and y == pos.y and z == pos.z) then
+                    local check_pos = {x = x, y = y, z = z}
+                    core.log(dump(check_pos))
+                    local node = core.get_node_or_nil(check_pos)
+                    -- например, ищем блок "chunkkeeper:keeper_on"
+                    if node and (node.name == "chunkkeeper:keeper_on" or node.name == "chunkkeeper:keeper_off") then
+                        return true
+                    end
+                end
+            end
+        end
+    end
+
+    --[[local r = radius or 16
     local rvec = {x = r, y = r, z = r}
     local minp = vector.subtract(pos, rvec)
     local maxp = vector.add(pos, rvec)
@@ -221,7 +251,7 @@ local function is_forceload_nearby(pos, radius)
         if not vector.equals(p, pos) then
             return true
         end
-    end
+    end]]
     return false
 end
 
