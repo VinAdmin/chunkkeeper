@@ -248,17 +248,21 @@ minetest.register_node("chunkkeeper:keeper_off", {
         local inv = meta:get_inventory()
         inv:set_size("main", 1) -- input burnables here (all burn times increased by at least x2)
     end,
-    after_place_node = function (pos, placer)
-        if is_forceload_nearby(pos, 32) then
-            minetest.chat_send_player(placer:get_player_name(), S("There is already an active loading block nearby."))
-            minetest.set_node(pos, {name = "air"}) -- Удалить поставленный блок
+    after_place_node = function (pos, placer, itemstack)
+        if is_forceload_nearby(pos, 16) then
+            core.chat_send_player(placer:get_player_name(), S("There is already an active loading block nearby."))
+            core.set_node(pos, {name = "air"}) -- Удалить поставленный блок
 
             -- Вернуть предмет в инвентарь
-            local inv = placer:get_inventory()
-            if inv then
-                inv:add_item("main", ItemStack("chunkkeeper:keeper_off"))
+            if placer and placer:is_player() then
+                local inv = placer:get_inventory()
+                if inv and inv:room_for_item("main", itemstack) then
+                    --inv:add_item("main", ItemStack(itemstack:get_name()))
+                    return ItemStack(itemstack:get_name())
+                else
+                    core.item_drop(itemstack, placer, pos)
+                end
             end
-            return
         end
 
         if placer and placer:is_player() then -- Only update the owner when we have an owner
